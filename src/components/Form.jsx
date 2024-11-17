@@ -6,7 +6,7 @@ const Form = () => {
   return (
     <div>
       <Input type="text" placeholder="Your full name" />
-      <Button>Start Order</Button>
+      <Button text="Start Order"/>
     </div>
   );
 };
