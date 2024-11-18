@@ -1,4 +1,5 @@
 import './Menu.css';
+import Button from '../Button/Button';
 
 const pizzas = [
   {
@@ -225,7 +226,7 @@ const Menu = () => {
               )}
             </div>
             {!pizza.soldOut && (
-              <button className="add-to-cart">Add to Cart</button>
+              <Button className="add-to-cart" text="Add to Cart"/>
             )}
           </li>
         ))}
