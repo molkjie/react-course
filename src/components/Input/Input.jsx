@@ -1,7 +1,15 @@
-import "./Input.css"; 
+import './Input.css';
 
-const Input = (props) => {
-  return <input type={props.type} className={props.className} placeholder={props.placeholder} />;
+const Input = props => {
+  return (
+    <input
+      type={props.type}
+      placeholder={props.placeholder}
+      value={props.value}
+      onChange={props.onChange}
+      className={props.className}
+    />
+  );
 };
 
 export default Input;
