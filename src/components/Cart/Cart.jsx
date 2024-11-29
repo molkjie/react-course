@@ -1,27 +1,14 @@
+import CartItem from './CartItem';
 import Button from '../Button/Button';
-import Counter from '../Counter/Counter';
 import '../Cart/Cart.css';
-const cartItems = [
-  {
-    id: 1,
-    name: 'Margherita',
-    price: 12.0,
-    quantity: 1,
-  },
-  {
-    id: 2,
-    name: 'Romana',
-    price: 15.0,
-    quantity: 2,
-  },
-  {
-    id: 3,
-    name: 'Prosciutto e Rucola',
-    price: 16.0,
-    quantity: 1,
-  },
-];
+
 const Cart = () => {
+  const cartItems = [
+    { id: 1, name: 'Margherita', price: 12.0, quantity: 1 },
+    { id: 2, name: 'Romana', price: 15.0, quantity: 2 },
+    { id: 3, name: 'Prosciutto e Rucola', price: 16.0, quantity: 1 },
+  ];
+
   const handleIncrement = id => {
     console.log(`Increment quantity: ${id}`);
   };
@@ -51,25 +38,13 @@ const Cart = () => {
 
       <div className="cart-items">
         {cartItems.map(item => (
-          <div key={item.id} className="cart-item">
-            <span className="quantity-text">{item.quantity}×</span>
-            <span>{item.name}</span>
-            <span className="price">
-              €{(item.price * item.quantity).toFixed(2)}
-            </span>
-            <div className="quantity-controls">
-              <Counter
-                quantity={item.quantity}
-                onIncrement={() => handleIncrement(item.id)}
-                onDecrement={() => handleDecrement(item.id)}
-              />
-              <Button
-                className="delete-btn"
-                text="DELETE"
-                onClick={() => handleDelete(item.id)}
-              />
-            </div>
-          </div>
+          <CartItem
+            key={item.id}
+            item={item}
+            onIncrement={handleIncrement}
+            onDecrement={handleDecrement}
+            onDelete={handleDelete}
+          />
         ))}
       </div>
 
