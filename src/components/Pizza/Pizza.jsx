@@ -6,7 +6,6 @@ import Counter from '../Counter/Counter';
 const PizzaItem = ({ pizza }) => {
   const [quantity, setQuantity] = useState(0);
 
-  const handleAddToCart = () => setQuantity(1);
   const handleIncrement = () => setQuantity(quantity + 1);
   const handleDecrement = () => {
     if (quantity > 1) {
@@ -34,7 +33,7 @@ const PizzaItem = ({ pizza }) => {
             <Button
               className="add-to-cart"
               text="Add to Cart"
-              onClick={handleAddToCart}
+              onClick={handleIncrement}
             />
           ) : (
             <Counter
