@@ -1,16 +1,27 @@
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .logo {
-    font-family: monospace;
-    font-size: 1.25rem;
-    font-weight: bold;
+  font-family: monospace;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
 }
 .username {
-    font-weight: bold;
+  font-weight: bold;
 }
 .search-bar {
-    background-color: #ffe084;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    width: 300px;
-    font-style: italic;
+  background-color: #ffe084;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  width: 300px;
+  font-style: italic;
+}
+.nav-link {
+  text-decoration: none;
+  color: black;
 }

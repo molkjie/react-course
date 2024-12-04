@@ -1,7 +1,7 @@
-import CartItem from './CartItem';
-import Button from '../Button/Button';
-import '../Cart/Cart.css';
-
+import CartItem from '../components/Cart/CartItem';
+import Button from '../components/Button/Button';
+import '../components/Cart/Cart.css';
+import { Link } from 'react-router';
 const Cart = () => {
   const cartItems = [
     { id: 1, name: 'Margherita', price: 12.0, quantity: 1 },
@@ -31,9 +31,9 @@ const Cart = () => {
 
   return (
     <div className="cart-container">
-      <a href="#" className="back-link">
+      <Link to="/menu" className="back-link">
         ← Back to menu
-      </a>
+      </Link>
       <h1 className="cart-title">Your cart, Vlad</h1>
 
       <div className="cart-items">

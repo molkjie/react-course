@@ -1,32 +1,31 @@
 import { useState, useEffect } from 'react';
-import './Menu.css';
-import PizzaItem from '../Pizza/Pizza';
+import '../components/Menu/Menu.css';
+import PizzaItem from '../components/Pizza/Pizza';
 
 const Menu = () => {
   const [pizzas, setPizzas] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const getPizzas = async () => {
-    try {
-      const response = await fetch(
-        'https://react-fast-pizza-api.onrender.com/api/menu',
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP Error! Status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      setPizzas(result.data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const getPizzas = async () => {
+      try {
+        const response = await fetch(
+          'https://react-fast-pizza-api.onrender.com/api/menu',
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        setPizzas(result.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
     getPizzas();
   }, []);
 

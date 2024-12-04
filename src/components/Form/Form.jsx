@@ -1,9 +1,11 @@
 import Button from '../Button/Button';
 import Input from '../Input/Input';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const Form = () => {
   const [name, setName] = useState('');
+  const navigate = useNavigate();
 
   const handleInputChange = event => {
     setName(event.target.value);
@@ -11,6 +13,12 @@ const Form = () => {
 
   const handleSubmit = () => {
     console.log(name);
+
+    if (name.trim()) {
+      navigate('/menu');
+    } else {
+      alert('Please enter your name');
+    }
   };
 
   return (
