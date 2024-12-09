@@ -1,10 +1,12 @@
 import Button from '../Button/Button';
 import Input from '../Input/Input';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router';
+import { UserContext } from '/src/context/UserContext.jsx';
 
 const Form = () => {
   const [name, setName] = useState('');
+  const { setUserName } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleInputChange = event => {
@@ -12,9 +14,8 @@ const Form = () => {
   };
 
   const handleSubmit = () => {
-    console.log(name);
-
     if (name.trim()) {
+      setUserName(name);
       navigate('/menu');
     } else {
       alert('Please enter your name');
