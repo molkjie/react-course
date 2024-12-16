@@ -34,7 +34,7 @@ const Cart = () => {
       <Link to="/menu" className="back-link">
         ← Back to menu
       </Link>
-      <h1 className="cart-title">Your cart, Vlad</h1>
+      <h1 className="cart-title">Your cart, Kate</h1>
 
       <div className="cart-items">
         {cartItems.map(item => (
