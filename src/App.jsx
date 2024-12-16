@@ -5,6 +5,7 @@ import Main from './pages/Main';
 import Menu from './pages/Menu';
 import Cart from './pages/Cart';
 import OrderForm from './pages/OrderForm';
+import OrderStatus from './pages/OrderStatus';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/menu" element={<Menu />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/order" element={<OrderForm />} />
+        <Route path="/orders/:id" element={<OrderStatus />} />
       </Routes>
     </div>
   );

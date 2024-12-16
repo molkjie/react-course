@@ -1,4 +1,4 @@
-import '../components/Order/OrderForm.css';
+import '../components/OrderForm/OrderForm.css';
 import { useState } from 'react';
 import Input from '../components/Input/Input';
 import Button from '../components/Button/Button';
