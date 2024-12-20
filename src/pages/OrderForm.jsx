@@ -1,64 +1,119 @@
 import '../components/OrderForm/OrderForm.css';
-import { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '../components/Input/Input';
 import Button from '../components/Button/Button';
 
-const OrderForm = () => {
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
-  const [priority, setPriority] = useState(false);
+const schema = z.object({
+  firstName: z.string().nonempty('First Name is required'),
+  phone: z
+    .string()
+    .nonempty('Phone number is required')
+    .regex(/^\+?[0-9]{10,15}$/, 'Invalid phone number format'),
+  address: z.string().nonempty('Address is required'),
+  priority: z.boolean(),
+});
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    alert('Order submitted!');
+const OrderForm = () => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      firstName: 'kate',
+      phone: '',
+      address: '',
+      priority: false,
+    },
+  });
+
+  const onSubmit = data => {
+    alert(`Order submitted!`);
+    console.log(data);
   };
 
   return (
     <div className="container">
       <h1>Ready to order? Let`s go!</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="firstName">First Name</label>
-          <Input type="text" value="kate" readOnly className="input" />
+          <Controller
+            name="firstName"
+            control={control}
+            render={({ field }) => (
+              <Input type="text" {...field} readOnly className="input" />
+            )}
+          />
+          {errors.firstName && (
+            <span className="error">{errors.firstName.message}</span>
+          )}
         </div>
 
         <div className="form-group">
           <label htmlFor="phone">Phone number</label>
-          <Input
-            type="tel"
-            id="phone"
-            value={phone}
-            onChange={e => setPhone(e.target.value)}
-            className="input"
-            placeholder="Enter your phone number"
-            required
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field }) => (
+              <Input
+                type="tel"
+                id="phone"
+                {...field}
+                className="input"
+                placeholder="Enter your phone number"
+              />
+            )}
           />
+          {errors.phone && (
+            <span className="error">{errors.phone.message}</span>
+          )}
         </div>
 
         <div className="form-group">
           <label htmlFor="address">Address</label>
           <div className="input-wrapper">
-            <Input
-              type="text"
-              id="address"
-              value={address}
-              onChange={e => setAddress(e.target.value)}
-              className="input"
-              placeholder="Enter your address"
-              required
+            <Controller
+              name="address"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  type="text"
+                  id="address"
+                  {...field}
+                  className="input"
+                  placeholder="Enter your address"
+                />
+              )}
             />
+            {errors.address && (
+              <span className="error">{errors.address.message}</span>
+            )}
           </div>
         </div>
 
         <div className="checkbox-group">
           <div className="checkbox-wrapper">
-            <input
-              type="checkbox"
-              id="priority"
-              checked={priority}
-              onChange={() => setPriority(!priority)}
+            <Controller
+              name="priority"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <input
+                    type="checkbox"
+                    id="priority"
+                    checked={field.value}
+                    onChange={e => field.onChange(e.target.checked)}
+                  />
+                  <label htmlFor="priority">
+                    Want to give your order priority?
+                  </label>
+                </>
+              )}
             />
-            <label htmlFor="priority">Want to give your order priority?</label>
           </div>
         </div>
 
