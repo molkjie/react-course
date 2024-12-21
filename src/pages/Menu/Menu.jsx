@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import '../components/Menu/Menu.css';
-import PizzaItem from '../components/Pizza/Pizza';
+import './Menu.css';
+import PizzaItem from '../../components/Pizza/Pizza';
 
 const Menu = () => {
   const [pizzas, setPizzas] = useState([]);

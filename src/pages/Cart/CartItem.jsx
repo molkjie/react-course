@@ -1,5 +1,5 @@
-import Counter from '../Counter/Counter';
-import Button from '../Button/Button';
+import Counter from '../../components/Counter/Counter';
+import Button from '../../components/Button/Button';
 
 const CartItem = ({ item, onIncrement, onDecrement, onDelete }) => {
   return (

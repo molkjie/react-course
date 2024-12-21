@@ -1,5 +1,5 @@
-import Form from '../components/Form/Form';
-import '../components/Main/Main.css';
+import Form from '../../components/Form/Form';
+import './Main.css';
 
 const Main = () => {
   return (

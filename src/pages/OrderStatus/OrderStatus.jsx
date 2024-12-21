@@ -1,7 +1,7 @@
-import '../components/OrderStatus/OrderStatus.css';
-import Badge from '../components/OrderStatus/BadgeItem';
-import PizzaItem from '../components/OrderStatus/PizzaItem';
-import PriceItem from '../components/OrderStatus/PriceItem';
+import './OrderStatus.css';
+import Badge from './BadgeItem';
+import PizzaItem from './PizzaItem';
+import PriceItem from './PriceItem';
 const OrderStatus = () => {
   return (
     <div className="container">

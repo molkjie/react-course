@@ -1,11 +1,11 @@
 import './assets/App.css';
 import Header from './components/Header/Header';
 import { Routes, Route } from 'react-router';
-import Main from './pages/Main';
-import Menu from './pages/Menu';
-import Cart from './pages/Cart';
-import OrderForm from './pages/OrderForm';
-import OrderStatus from './pages/OrderStatus';
+import Main from './pages/Main/Main';
+import Menu from './pages/Menu/Menu';
+import Cart from './pages/Cart/Cart';
+import OrderForm from './pages/OrderForm/OrderForm';
+import OrderStatus from './pages/OrderStatus/OrderStatus';
 
 function App() {
   return (

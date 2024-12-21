@@ -1,6 +1,6 @@
-import CartItem from '../components/Cart/CartItem';
-import Button from '../components/Button/Button';
-import '../components/Cart/Cart.css';
+import CartItem from './CartItem';
+import Button from '../../components/Button/Button';
+import './Cart.css';
 import { Link } from 'react-router';
 const Cart = () => {
   const cartItems = [
