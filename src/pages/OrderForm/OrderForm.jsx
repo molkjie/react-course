@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '../../components/Button/Button';
 import FormGroup from './FormGroup';
+import { Link } from 'react-router';
 
 const schema = z.object({
   firstName: z.string().nonempty('First Name is required'),
@@ -37,63 +38,66 @@ const OrderForm = () => {
 
   return (
     <div className="container">
-      <h1>Ready to order? Let`s go!</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormGroup
-          name="firstName"
-          label="First Name"
-          control={control}
-          errors={errors}
-          type="text"
-          readOnly
-        />
+      <div className="container-form">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <h1>Ready to order? Let`s go!</h1>
+          <FormGroup
+            name="firstName"
+            label="First Name"
+            control={control}
+            errors={errors}
+            type="text"
+            readOnly
+          />
 
-        <FormGroup
-          name="phone"
-          label="Phone number"
-          control={control}
-          errors={errors}
-          type="tel"
-          placeholder="Enter your phone number"
-        />
+          <FormGroup
+            name="phone"
+            label="Phone number"
+            control={control}
+            errors={errors}
+            type="tel"
+            placeholder="Enter your phone number"
+          />
 
-        <FormGroup
-          name="address"
-          label="Address"
-          control={control}
-          errors={errors}
-          type="text"
-          placeholder="Enter your address"
-        />
+          <FormGroup
+            name="address"
+            label="Address"
+            control={control}
+            errors={errors}
+            type="text"
+            placeholder="Enter your address"
+          />
 
-        <div className="checkbox-group">
-          <div className="checkbox-wrapper">
-            <Controller
-              name="priority"
-              control={control}
-              render={({ field }) => (
-                <>
-                  <input
-                    type="checkbox"
-                    id="priority"
-                    checked={field.value}
-                    onChange={e => field.onChange(e.target.checked)}
-                  />
-                  <label htmlFor="priority">
-                    Want to give your order priority?
-                  </label>
-                </>
-              )}
-            />
+          <div className="checkbox-group">
+            <div className="checkbox-wrapper">
+              <Controller
+                name="priority"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <input
+                      type="checkbox"
+                      id="priority"
+                      checked={field.value}
+                      onChange={e => field.onChange(e.target.checked)}
+                    />
+                    <label htmlFor="priority">
+                      Want to give your order priority?
+                    </label>
+                  </>
+                )}
+              />
+            </div>
           </div>
-        </div>
-
-        <Button
-          type="submit"
-          className="order-btn"
-          text="Order now for €12.00"
-        />
-      </form>
+          <Link to="/orderStatus">
+            <Button
+              type="submit"
+              className="order-btn"
+              text="Order now for €12.00"
+            />
+          </Link>
+        </form>
+      </div>
     </div>
   );
 };

@@ -50,6 +50,9 @@
 
 .pizza-item {
   margin-bottom: 1rem;
+  /* display: flex;
+  align-items: center;
+  justify-content: space-between; */
 }
 
 .pizza-header {
@@ -63,6 +66,7 @@
 }
 
 .pizza-price {
+  margin-left: 10px;
   font-size: 1.2rem;
   font-weight: bold;
 }

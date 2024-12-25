@@ -1,18 +1,28 @@
-import { useState } from 'react';
 import '../Pizza/Pizza.css';
 import Button from '../Button/Button';
 import Counter from '../Counter/Counter';
+import { useCart } from '../../context/CartContext';
 
 const PizzaItem = ({ pizza }) => {
-  const [quantity, setQuantity] = useState(0);
+  const { cart, dispatch } = useCart();
 
-  const handleIncrement = () => setQuantity(quantity + 1);
+  const cartItem = cart.find(item => item.id === pizza.id);
+  const quantity = cartItem ? cartItem.quantity : 0;
+
+  const handleIncrement = () => {
+    dispatch({ type: 'ADD_TO_CART', payload: pizza });
+  };
+
   const handleDecrement = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1);
+      dispatch({ type: 'DECREMENT_QUANTITY', payload: pizza.id });
     } else {
-      setQuantity(0);
+      dispatch({ type: 'REMOVE_FROM_CART', payload: pizza.id });
     }
+  };
+
+  const handleRemove = () => {
+    dispatch({ type: 'REMOVE_FROM_CART', payload: pizza.id });
   };
 
   return (
@@ -36,11 +46,18 @@ const PizzaItem = ({ pizza }) => {
               onClick={handleIncrement}
             />
           ) : (
-            <Counter
-              quantity={quantity}
-              onIncrement={handleIncrement}
-              onDecrement={handleDecrement}
-            />
+            <>
+              <Counter
+                quantity={quantity}
+                onIncrement={handleIncrement}
+                onDecrement={handleDecrement}
+              />
+              <Button
+                className="remove-from-cart"
+                text="Delete"
+                onClick={handleRemove}
+              />
+            </>
           )}
         </div>
       )}

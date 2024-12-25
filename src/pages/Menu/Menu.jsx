@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import './Menu.css';
 import PizzaItem from '../../components/Pizza/Pizza';
+import { useCart } from '../../context/CartContext';
 
 const Menu = () => {
   const [pizzas, setPizzas] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { dispatch } = useCart();
 
   useEffect(() => {
     const getPizzas = async () => {
@@ -29,6 +31,10 @@ const Menu = () => {
     getPizzas();
   }, []);
 
+  const handleAddToCart = pizza => {
+    dispatch({ type: 'ADD_TO_CART', payload: pizza });
+  };
+
   if (loading) return <p>Loading pizzas...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -40,7 +46,11 @@ const Menu = () => {
       ) : (
         <ul>
           {pizzas.map(pizza => (
-            <PizzaItem key={pizza.id} pizza={pizza} />
+            <PizzaItem
+              key={pizza.id}
+              pizza={pizza}
+              onAddToCart={() => handleAddToCart(pizza)}
+            />
           ))}
         </ul>
       )}

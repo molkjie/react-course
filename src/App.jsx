@@ -6,19 +6,24 @@ import Menu from './pages/Menu/Menu';
 import Cart from './pages/Cart/Cart';
 import OrderForm from './pages/OrderForm/OrderForm';
 import OrderStatus from './pages/OrderStatus/OrderStatus';
+import { CartProvider } from './context/CartContext';
 
 function App() {
   return (
-    <div className="container">
-      <Header />
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/order" element={<OrderForm />} />
-        <Route path="/orders/:id" element={<OrderStatus />} />
-      </Routes>
-    </div>
+    <CartProvider>
+      <div className="container">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/menu" element={<Menu />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/order" element={<OrderForm />} />
+          <Route path="/orders/:id" element={<OrderStatus />} />
+          <Route path="/orderForm" element={<OrderForm />} />
+          <Route path="/orderStatus" element={<OrderStatus />} />
+        </Routes>
+      </div>
+    </CartProvider>
   );
 }
 

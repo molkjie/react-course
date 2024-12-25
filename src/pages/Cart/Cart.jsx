@@ -1,32 +1,36 @@
 import CartItem from './CartItem';
 import Button from '../../components/Button/Button';
 import './Cart.css';
-import { Link } from 'react-router';
+import { useCart } from '../../context/CartContext';
+import { Link, useNavigate } from 'react-router';
+
 const Cart = () => {
-  const cartItems = [
-    { id: 1, name: 'Margherita', price: 12.0, quantity: 1 },
-    { id: 2, name: 'Romana', price: 15.0, quantity: 2 },
-    { id: 3, name: 'Prosciutto e Rucola', price: 16.0, quantity: 1 },
-  ];
+  const navigate = useNavigate();
+
+  const handleOrderAndNavigate = () => {
+    handleOrder();
+    navigate('/orderForm');
+  };
+  const { cart, dispatch } = useCart();
 
   const handleIncrement = id => {
-    console.log(`Increment quantity: ${id}`);
+    dispatch({ type: 'INCREMENT_QUANTITY', payload: id });
   };
 
   const handleDecrement = id => {
-    console.log(`Decrement quantity: ${id}`);
+    dispatch({ type: 'DECREMENT_QUANTITY', payload: id });
   };
 
   const handleDelete = id => {
-    console.log(`Delete item: ${id}`);
-  };
-
-  const handleOrder = () => {
-    console.log('Ordering pizzas...');
+    dispatch({ type: 'REMOVE_FROM_CART', payload: id });
   };
 
   const handleClearCart = () => {
-    console.log('Clearing cart...');
+    dispatch({ type: 'CLEAR_CART' });
+  };
+
+  const handleOrder = () => {
+    console.log('Ordering pizzas...', cart);
   };
 
   return (
@@ -34,10 +38,10 @@ const Cart = () => {
       <Link to="/menu" className="back-link">
         ← Back to menu
       </Link>
-      <h1 className="cart-title">Your cart, Kate</h1>
+      <h1 className="cart-title">Your cart</h1>
 
       <div className="cart-items">
-        {cartItems.map(item => (
+        {cart.map(item => (
           <CartItem
             key={item.id}
             item={item}
@@ -49,11 +53,13 @@ const Cart = () => {
       </div>
 
       <div className="cart-actions">
-        <Button
-          className="order-btn"
-          text="Order pizzas"
-          onClick={handleOrder}
-        />
+        <Link to="/orderForm">
+          <Button
+            className="order-btn"
+            text="Order pizzas"
+            onClick={handleOrderAndNavigate}
+          />
+        </Link>
         <Button
           className="clear-btn"
           text="Clear cart"
