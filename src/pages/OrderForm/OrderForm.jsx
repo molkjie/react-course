@@ -4,8 +4,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '../../components/Button/Button';
 import FormGroup from './FormGroup';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import useFetch from '../../hooks/useFetch';
 
 const schema = z.object({
   firstName: z.string().nonempty('First Name is required'),
@@ -33,31 +33,15 @@ const OrderForm = () => {
   });
 
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [pizzas, setPizzas] = useState([]);
 
-  useEffect(() => {
-    const fetchPizzas = async () => {
-      try {
-        const response = await fetch(
-          'https://react-fast-pizza-api.onrender.com/api/pizzas',
-        );
-        const data = await response.json();
-        setPizzas(data);
-      } catch (fetchError) {
-        console.error('Error fetching pizzas:', fetchError);
-        setError('Failed to load pizzas.');
-      }
-    };
-
-    fetchPizzas();
-  }, []);
+  // Використовуємо кастомний хук useFetch
+  const {
+    data: pizzas,
+    error: fetchError,
+    isLoading: loadingPizzas,
+  } = useFetch('https://react-fast-pizza-api.onrender.com/api/pizzas');
 
   const onSubmit = async data => {
-    setLoading(true);
-    setError('');
-
     const cart = pizzas.map(pizza => ({
       pizzaId: pizza.id,
       name: pizza.name,
@@ -92,13 +76,10 @@ const OrderForm = () => {
       if (result.status === 'success') {
         navigate(`/orders/${result.data.id}`, { state: result.data });
       } else {
-        setError('Order failed. Please try again.');
+        throw new Error('Order failed. Please try again.');
       }
-    } catch (postError) {
-      console.error('Error creating order:', postError);
-      setError('Failed to connect to the server.');
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      console.error('Error creating order:', error);
     }
   };
 
@@ -157,17 +138,19 @@ const OrderForm = () => {
             </div>
           </div>
 
-          {error && <p className="error">{error}</p>}
+          {fetchError && (
+            <p className="error">Error loading pizzas: {fetchError}</p>
+          )}
 
           <Button
             type="submit"
             className="order-btn"
-            text={loading ? 'Placing Order...' : 'Order now'}
-            disabled={loading}
+            text={loadingPizzas ? 'Loading...' : 'Order now'}
+            disabled={loadingPizzas}
           />
         </form>
 
-        {pizzas.length > 0 && (
+        {pizzas && pizzas.length > 0 && (
           <div className="pizzas-list">
             <h2>Your Selected Pizzas:</h2>
             <ul>
