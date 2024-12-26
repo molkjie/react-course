@@ -4,7 +4,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '../../components/Button/Button';
 import FormGroup from './FormGroup';
-import { Link } from 'react-router';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const schema = z.object({
   firstName: z.string().nonempty('First Name is required'),
@@ -31,9 +32,74 @@ const OrderForm = () => {
     },
   });
 
-  const onSubmit = data => {
-    alert(`Order submitted!`);
-    console.log(data);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [pizzas, setPizzas] = useState([]);
+
+  useEffect(() => {
+    const fetchPizzas = async () => {
+      try {
+        const response = await fetch(
+          'https://react-fast-pizza-api.onrender.com/api/pizzas',
+        );
+        const data = await response.json();
+        setPizzas(data);
+      } catch (fetchError) {
+        console.error('Error fetching pizzas:', fetchError);
+        setError('Failed to load pizzas.');
+      }
+    };
+
+    fetchPizzas();
+  }, []);
+
+  const onSubmit = async data => {
+    setLoading(true);
+    setError('');
+
+    const cart = pizzas.map(pizza => ({
+      pizzaId: pizza.id,
+      name: pizza.name,
+      quantity: 1,
+      unitPrice: pizza.unitPrice,
+      totalPrice: pizza.unitPrice * 1,
+    }));
+
+    const order = {
+      customer: data.firstName,
+      phone: data.phone,
+      address: data.address,
+      priority: data.priority,
+      position: '',
+      cart,
+    };
+
+    try {
+      const response = await fetch(
+        'https://react-fast-pizza-api.onrender.com/api/order',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(order),
+        },
+      );
+
+      const result = await response.json();
+
+      if (result.status === 'success') {
+        navigate(`/orders/${result.data.id}`, { state: result.data });
+      } else {
+        setError('Order failed. Please try again.');
+      }
+    } catch (postError) {
+      console.error('Error creating order:', postError);
+      setError('Failed to connect to the server.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,6 +107,7 @@ const OrderForm = () => {
       <div className="container-form">
         <form onSubmit={handleSubmit(onSubmit)}>
           <h1>Ready to order? Let`s go!</h1>
+
           <FormGroup
             name="firstName"
             label="First Name"
@@ -89,14 +156,29 @@ const OrderForm = () => {
               />
             </div>
           </div>
-          <Link to="/orderStatus">
-            <Button
-              type="submit"
-              className="order-btn"
-              text="Order now for €12.00"
-            />
-          </Link>
+
+          {error && <p className="error">{error}</p>}
+
+          <Button
+            type="submit"
+            className="order-btn"
+            text={loading ? 'Placing Order...' : 'Order now'}
+            disabled={loading}
+          />
         </form>
+
+        {pizzas.length > 0 && (
+          <div className="pizzas-list">
+            <h2>Your Selected Pizzas:</h2>
+            <ul>
+              {pizzas.map(pizza => (
+                <li key={pizza.id}>
+                  {pizza.name} - €{pizza.price}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

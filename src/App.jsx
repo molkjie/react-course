@@ -19,7 +19,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<OrderForm />} />
           <Route path="/orders/:id" element={<OrderStatus />} />
-          <Route path="/orderForm" element={<OrderForm />} />
+
           <Route path="/orderStatus" element={<OrderStatus />} />
         </Routes>
       </div>

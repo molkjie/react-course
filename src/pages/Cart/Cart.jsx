@@ -53,7 +53,7 @@ const Cart = () => {
       </div>
 
       <div className="cart-actions">
-        <Link to="/orderForm">
+        <Link to="/order">
           <Button
             className="order-btn"
             text="Order pizzas"

@@ -2,36 +2,62 @@ import './OrderStatus.css';
 import Badge from './BadgeItem';
 import PizzaItem from './PizzaItem';
 import PriceItem from './PriceItem';
+import { useLocation } from 'react-router';
+
 const OrderStatus = () => {
+  const { state } = useLocation();
+
+  if (!state) {
+    return <p>Order not found. Please try again.</p>;
+  }
+
+  const {
+    customer = 'Unknown',
+    cart = [],
+    orderPrice = 0,
+    priority = false,
+    priorityPrice = 0,
+    estimatedDelivery = new Date().toISOString(),
+    status = 'unknown',
+  } = state;
+
   return (
     <div className="container">
       <div className="header">
-        <h1 className="order-title">Order #5T460L status: preparing</h1>
+        <h1 className="order-title">Order status: {status}</h1>
+        <p className="customer-info">Customer: {customer}</p>
         <div className="badges">
-          <Badge text="PRIORITY" className="badge-priority" />
-          <Badge text="PREPARING ORDER" className="badge-preparing" />
+          {priority && <Badge text="PRIORITY" className="badge-priority" />}
+          <Badge text={status.toUpperCase()} className="badge-status" />
         </div>
       </div>
 
       <div className="time-banner">
-        <div className="time-left">Only 49 minutes left 😃</div>
-        <div className="estimated-time">
-          (Estimated delivery: Dec 12, 01:37 PM)
+        <div className="time-left">
+          Estimated delivery: {new Date(estimatedDelivery).toLocaleTimeString()}
         </div>
       </div>
 
       <div className="order-details">
-        <PizzaItem
-          name="1x Margherita"
-          price="€12.00"
-          ingredients="Tomato, Mozzarella, Basil"
-        />
+        {cart.map(item => (
+          <PizzaItem
+            key={item.pizzaId}
+            name={`${item.quantity}x ${item.name}`}
+            price={`€${item.totalPrice}`}
+            ingredients={item.ingredients || 'Ingredients not specified'}
+          />
+        ))}
       </div>
 
       <div className="price-breakdown">
-        <PriceItem label="Price pizza:" value="€12.00" />
-        <PriceItem label="Price priority:" value="€2.00" />
-        <PriceItem label="To pay on delivery:" value="€14.00" />
+        <PriceItem label="Order price:" value={`€${orderPrice}`} />
+        {priority && (
+          <PriceItem label="Priority price:" value={`€${priorityPrice}`} />
+        )}
+        <PriceItem
+          label="Total price:"
+          value={`€${orderPrice + (priority ? priorityPrice : 0)}`}
+        />
       </div>
     </div>
   );
