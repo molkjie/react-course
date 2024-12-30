@@ -9,7 +9,7 @@ const Main = () => {
       <p className="welcome">
         👉 Welcome! Please start by telling us your name:
       </p>
-      <Form></Form>
+      <Form />
     </main>
   );
 };

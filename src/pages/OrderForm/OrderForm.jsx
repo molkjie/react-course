@@ -34,12 +34,9 @@ const OrderForm = () => {
 
   const navigate = useNavigate();
 
-  // Використовуємо кастомний хук useFetch
-  const {
-    data: pizzas,
-    error: fetchError,
-    isLoading: loadingPizzas,
-  } = useFetch('https://react-fast-pizza-api.onrender.com/api/pizzas');
+  const { data: pizzas, isLoading: loadingPizzas } = useFetch(
+    'https://react-fast-pizza-api.onrender.com/api/pizzas',
+  );
 
   const onSubmit = async data => {
     const cart = pizzas.map(pizza => ({
@@ -137,10 +134,6 @@ const OrderForm = () => {
               />
             </div>
           </div>
-
-          {fetchError && (
-            <p className="error">Error loading pizzas: {fetchError}</p>
-          )}
 
           <Button
             type="submit"

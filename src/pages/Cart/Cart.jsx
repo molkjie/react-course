@@ -1,17 +1,19 @@
-import CartItem from './CartItem';
+import { Suspense, lazy } from 'react';
 import Button from '../../components/Button/Button';
 import './Cart.css';
 import { useCart } from '../../context/CartContext';
 import { Link, useNavigate } from 'react-router';
 
+const CartItem = lazy(() => import('./CartItem'));
+
 const Cart = () => {
   const navigate = useNavigate();
+  const { cart, dispatch } = useCart();
 
   const handleOrderAndNavigate = () => {
     handleOrder();
     navigate('/orderForm');
   };
-  const { cart, dispatch } = useCart();
 
   const handleIncrement = id => {
     dispatch({ type: 'INCREMENT_QUANTITY', payload: id });
@@ -41,15 +43,17 @@ const Cart = () => {
       <h1 className="cart-title">Your cart</h1>
 
       <div className="cart-items">
-        {cart.map(item => (
-          <CartItem
-            key={item.id}
-            item={item}
-            onIncrement={handleIncrement}
-            onDecrement={handleDecrement}
-            onDelete={handleDelete}
-          />
-        ))}
+        <Suspense fallback={<p>Loading items...</p>}>
+          {cart.map(item => (
+            <CartItem
+              key={item.id}
+              item={item}
+              onIncrement={handleIncrement}
+              onDecrement={handleDecrement}
+              onDelete={handleDelete}
+            />
+          ))}
+        </Suspense>
       </div>
 
       <div className="cart-actions">
